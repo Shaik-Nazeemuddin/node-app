@@ -1,0 +1,14 @@
+[
+    {
+        "taskName": "signIn"
+    },
+    {
+        "taskName": "signOut"
+    },
+    {
+        "taskName": "signUp"
+    },
+    {
+        "taskName": "forgetPassword"
+    }
+]

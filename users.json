@@ -1,0 +1,29 @@
+[
+    {
+        "firstName": "Nazeemuddin",
+        "lastName": "Shaik",
+        "email": "nazeemoddeen@gmail.com",
+        "password": "$2b$10$KRZW/m2mKD2Sr6pbK7twyeHQOngw3wR0sUpw0N4ATHNVE/G6yoHtm",
+        "designation": "Software Engineer",
+        "mobile": "9985786884",
+        "gender": "male"
+    },
+    {
+        "firstName": "Muhammed Arham",
+        "lastName": "Shaik",
+        "email": "muhammedarham@gmail.com",
+        "password": "$2b$10$dfHrmGNUB2oVXTdRQgHfy.FmmLjVJ0nHGB.I0Ol.12H57fE2r7FIy",
+        "designation": "Hafiz & Officer",
+        "mobile": "8074247967",
+        "gender": "male"
+    },
+    {
+        "firstName": "Noorjahan",
+        "lastName": "Shaik",
+        "email": "sknoorjahan09@gmail.com",
+        "password": "$2b$10$on0UHVqrEyU81I4ILN8I0.qYEaqZnrBv3FMz44gFquawzTPNP9Bh6",
+        "designation": "Manager",
+        "mobile": "9494680314",
+        "gender": "female"
+    }
+]

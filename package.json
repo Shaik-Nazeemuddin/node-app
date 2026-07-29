@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "scripts": {
+    "start-ser1st": "nodemon index.js",
+    "start-ser2nd": "nodemon todo.js",
+    "dev": "concurrently \"npm run start-ser1st\" \"npm run start-ser2nd\""
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
+  }
+}

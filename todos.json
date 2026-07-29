@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "task": "first app",
+        "status": "todo"
+    },
+    {
+        "id": 2,
+        "task": "second app",
+        "status": "doing"
+    },
+    {
+        "id": 3,
+        "task": "third app",
+        "status": "done"
+    }
+]
