@@ -28,6 +28,7 @@ import bcrypt from 'bcryptjs'
 //const bcrypt = require("bcryptjs");
 import jwt from 'jsonwebtoken'
 //const jwt = require("jsonwebtoken");
+import cors from "cors";
 
 const app = express()
 
@@ -39,18 +40,25 @@ import todosArr from './todos.json' with { type: 'json' }
 import todoArr from './todo.json' with { type: 'json' }
 // import users from './users.json' with { type: 'json' }
 // import { users, fetchUsers, saveUser } from './main.js'
-import { usersDetails as users, fetchUsers, saveUser } from './railwaypostgress.js'
+import { usersDetails as users, fetchUsers, saveUser, usersDetails } from './railwaypostgress.js'
 
 app.use(express.json())
 
 // Enable CORS if your React app is on a different origin
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins for simplicity in development
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  // ✅ FIX: Add Authorization here
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*'); // Allow all origins for simplicity in development
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//   // ✅ FIX: Add Authorization here
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//   next();
+// });
+
+
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.get('/', (req, res) => {
   res.send('Hello SK Nazeemuddin')
@@ -157,8 +165,8 @@ app.post('/submitform', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const newUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       email: req.body.email,
       password: hashedPassword,
       designation: req.body.designation,
@@ -221,7 +229,7 @@ app.post('/users/login', async (req, res) => {
 
   // 3. Generate JWT
   const token = jwt.sign(
-    { email: user.email, name: user.firstName },
+    { email: user.email, name: user.firstname },
     SECRET_KEY,
     { expiresIn: "20m" }
   );
@@ -229,7 +237,7 @@ app.post('/users/login', async (req, res) => {
   res.json({
     message: "Login successful ✅",
     token: token,
-    user: user.firstName
+    user: user.firstname
   });
 
   // try {
