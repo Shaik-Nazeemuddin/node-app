@@ -37,8 +37,8 @@ const SECRET_KEY = "db16ff8eed3521783f3dfc9d1428e9456774d6cfadeab4e53cf6a7a1857d
 import movieArr from './movie.json' with { type: 'json' }
 import todosArr from './todos.json' with { type: 'json' }
 import todoArr from './todo.json' with { type: 'json' }
-//import users from './users.json' with { type: 'json' }
-import { users, fetchUsers, saveUser } from './main.js'
+import users from './users.json' with { type: 'json' }
+//import { users, fetchUsers, saveUser } from './main.js'
 
 app.use(express.json())
 
@@ -164,8 +164,8 @@ app.post('/submitform', async (req, res) => {
       mobile: req.body.mobile,
       gender: req.body.gender
     }
-    // users.push(newUser);
-    await saveUser(newUser);
+    users.push(newUser);
+    // await saveUser(newUser);
     console.log('Form Data Received:', req.body); // Access data in req.body
   } else {
     return res.status(400).send(`Passwords do not match`);
