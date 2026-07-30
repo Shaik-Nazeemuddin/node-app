@@ -10,7 +10,10 @@ app.use(express.json())
 
 // Enable CORS if your React app is on a different origin
 app.use(cors({
-    origin: "*",
+    origin: [
+        "http://localhost:5174",
+        "https://react-app-pearl-psi-70.vercel.app"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
