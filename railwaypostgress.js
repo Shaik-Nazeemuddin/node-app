@@ -1,10 +1,22 @@
 import { Pool } from 'pg'
 import express from 'express'
 
+import cors from "cors"
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+
 const app = express()
 app.use(express.json())
 
-
+// Enable CORS if your React app is on a different origin
+app.use(cors({
+    origin: [
+        "http://localhost:5174",
+        "https://react-app-pearl-psi-70.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 let usersDetails = [];
 
@@ -12,6 +24,16 @@ const pool = new Pool({
     connectionString: 'postgresql://postgres:XBkWZBKZiKhOZxptkUmEFixBAJOFjQPq@maglev.proxy.rlwy.net:37351/railway'
 });
 
+// Testing working of Live PostgreSQL
+// async function getUsers() {
+//     try {
+//         const result = await pool.query(`SELECT * FROM "usersDetails"`);
+//         console.log('getUsers', result.rows);
+//     } catch (err) {
+//         console.error(err);
+//     }
+// }
+// getUsers();
 
 app.get("/fetchUsersData", async (req, res) => {
     const fetch_query = `SELECT * FROM "usersDetails"`
@@ -63,7 +85,6 @@ async function fetchUsers() {
         throw err;
     }
 }
-
 
 
 async function saveUser(userData) {
