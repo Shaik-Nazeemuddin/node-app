@@ -1,12 +1,11 @@
 
-
 import express from 'express'
 //const express = require('express');
 import bcrypt from 'bcryptjs'
 //const bcrypt = require("bcryptjs");
 import jwt from 'jsonwebtoken'
 //const jwt = require("jsonwebtoken");
-
+import cors from "cors";
 
 const app = express()
 
@@ -22,14 +21,12 @@ import { fetchUsers, saveUser, usersDetails as users } from './railwaypostgress.
 
 app.use(express.json())
 
-// Enable CORS if your React app is on a different origin
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins for simplicity in development
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  // ✅ FIX: Add Authorization here
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
+
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.get('/', (req, res) => {
   res.send('Hello SK Nazeemuddin')
