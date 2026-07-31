@@ -1,26 +1,4 @@
-// const http = require('http');
 
-// const server = http.createServer((req,res) => {
-//     if(req.url === '/'){
-//         res.write("Assalamualaikum Nazeemuddin");
-//     } else if(req.url === '/about') {
-//         res.write("App Khairyat se ho");
-//     } else {
-//         res.write("No such url");
-//     }
-//     res.end();
-// });
-
-// server.listen(3000,() => {
-//     console.log("server start listening at port 3000");
-// })  7893238540  HR => Venkata sasi kumar
-
-
-// 1.npm install express
-// 2.install nodemon for js changes, npm i -g nodemon (for nodejs changes to reflect )
-// API key - 98e31a0b8b4e2586697c5f2b8a90b484
-// https://api.themoviedb.org/3/genre/movie/list?api_key=98e31a0b8b4e2586697c5f2b8a90b484
-// https://api.themoviedb.org/3/movie/popular?api_key=98e31a0b8b4e2586697c5f2b8a90b484
 
 import express from 'express'
 //const express = require('express');
@@ -40,19 +18,9 @@ import todosArr from './todos.json' with { type: 'json' }
 import todoArr from './todo.json' with { type: 'json' }
 // import users from './users.json' with { type: 'json' }
 // import { users, fetchUsers, saveUser } from './main.js'
-import { fetchUsers, saveUser, usersDetails as users, usersDetails } from './railwaypostgress.js'
+import { fetchUsers, saveUser, usersDetails as users } from './railwaypostgress.js'
 
 app.use(express.json())
-
-// Enable CORS if your React app is on a different origin
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*'); // Allow all origins for simplicity in development
-//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-//   // ✅ FIX: Add Authorization here
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//   next();
-// });
-
 
 app.use(cors({
   origin: "*",
@@ -243,16 +211,6 @@ app.post('/users/login', async (req, res) => {
     user: user.firstname
   });
 
-  // try {
-  //   //if ((loggedUser.password === user.password) && (loggedUser.firstName === user.firstName)) {
-  //   if ((await bcrypt.compare(loggedUser.password, user.password)) && (loggedUser.email === user.email)) {
-  //     res.status(200).send(`Success`);
-  //   } else {
-  //     res.status(401).send(`Not allowed`);
-  //   }
-  // } catch {
-  //   res.status(500).send(`Error`);
-  // }
 })
 
 
@@ -279,31 +237,6 @@ app.post("/refresh-token", authenticateToken, (req, res) => {
   });
 });
 
-
-// app.post('/users/login', (req, res) => {
-//   const { firstName, password } = req.body;
-//   if (!firstName || !password) {
-//     return res.status(400).json({ message: 'Missing credentials' });
-//   }
-
-//   const user = users.find(u => u.firstName === firstName);
-//   if (!user) {
-//     return res.status(401).json({ message: 'Invalid username or password' });
-//   }
-
-//   if (password !== user.password) {
-//     return res.status(401).json({ message: 'Invalid username or password' });
-//   }
-
-//   return res.status(200).json({ message: 'Success' });
-// });
-
-
-// const PORT = process.env.PORT || 3000
-
-// app.listen(PORT, () => {
-//   console.log(`server1 start listening at port ${PORT}...`);
-// })
 
 (async () => {
   try {
