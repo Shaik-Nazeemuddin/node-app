@@ -40,7 +40,7 @@ import todosArr from './todos.json' with { type: 'json' }
 import todoArr from './todo.json' with { type: 'json' }
 // import users from './users.json' with { type: 'json' }
 // import { users, fetchUsers, saveUser } from './main.js'
-import { usersDetails as users, fetchUsers, saveUser, usersDetails } from './railwaypostgress.js'
+import { fetchUsers, saveUser, usersDetails as users, usersDetails } from './railwaypostgress.js'
 
 app.use(express.json())
 
@@ -155,6 +155,7 @@ app.delete('/todo/:id', (req, res) => {
 
 
 // form handling
+
 app.post('/submitform', async (req, res) => {
   const isEmailvalid = users.find(user => req.body.email === user.email);
   if (isEmailvalid) {
@@ -217,18 +218,19 @@ app.post('/users/login', async (req, res) => {
 
   // 1. Check user
   if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({ message: "Invalid credentials1" });
     // return res.status(400).send(`Invalid user`);
   }
 
   // 2. Validate password
   const isMatch = await bcrypt.compare(loggedUser.password, user.password);
   if (!isMatch) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({ message: "Invalid credentials1" });
   }
 
   // 3. Generate JWT
   const token = jwt.sign(
+    //{ email: user.email, name: user.firstName },
     { email: user.email, name: user.firstname },
     SECRET_KEY,
     { expiresIn: "20m" }
@@ -237,6 +239,7 @@ app.post('/users/login', async (req, res) => {
   res.json({
     message: "Login successful ✅",
     token: token,
+    //user: user.firstName
     user: user.firstname
   });
 
@@ -296,9 +299,21 @@ app.post("/refresh-token", authenticateToken, (req, res) => {
 // });
 
 
-const PORT = process.env.PORT || 3000
+// const PORT = process.env.PORT || 3000
 
-app.listen(PORT, () => {
-  console.log(`server1 start listening at port ${PORT}...`);
-})
+// app.listen(PORT, () => {
+//   console.log(`server1 start listening at port ${PORT}...`);
+// })
+
+(async () => {
+  try {
+    await fetchUsers();
+    app.listen(3000, () => {
+      console.log(`Server running on port 3000`);
+    });
+  } catch (err) {
+    console.error("Startup failed:", err);
+    process.exit(1);
+  }
+})();
 
