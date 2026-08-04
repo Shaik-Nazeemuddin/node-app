@@ -39,8 +39,8 @@ import movieArr from './movie.json' with { type: 'json' }
 import todosArr from './todos.json' with { type: 'json' }
 import todoArr from './todo.json' with { type: 'json' }
 // import users from './users.json' with { type: 'json' }
-// import { users, fetchUsers, saveUser } from './main.js'
-import { fetchUsers, saveUser, usersDetails as users } from './railwaypostgress.js'
+// import { users, fetchUsers, saveUser, contacts, fetchContacts, saveContact } from './main.js'
+import { fetchUsers, saveUser, usersDetails as users, contacts, fetchContacts, saveContact } from './railwaypostgress.js'
 
 app.use(express.json())
 
@@ -166,8 +166,8 @@ app.post('/submitform', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const newUser = {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       email: req.body.email,
       password: hashedPassword,
       designation: req.body.designation,
@@ -230,8 +230,8 @@ app.post('/users/login', async (req, res) => {
 
   // 3. Generate JWT
   const token = jwt.sign(
-    //{ email: user.email, name: user.firstName },
-    { email: user.email, name: user.firstname },
+    { email: user.email, name: user.firstName },
+    //{ email: user.email, name: user.firstname },
     SECRET_KEY,
     { expiresIn: "20m" }
   );
@@ -239,8 +239,8 @@ app.post('/users/login', async (req, res) => {
   res.json({
     message: "Login successful ✅",
     token: token,
-    //user: user.firstName
-    user: user.firstname
+    user: user.firstName
+    //user: user.firstname
   });
 
   // try {
@@ -255,6 +255,23 @@ app.post('/users/login', async (req, res) => {
   // }
 })
 
+// contact Form 
+app.post('/contactform', async (req, res) => {
+  const contactForm = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    message: req.body.message
+  }
+  await saveContact(contactForm);
+  console.log('Contact Form Data Received:', req.body); // Access data in req.body
+  res.status(200).send(`Contact Form Submitted Successfully`);
+})
+
+app.get('/contacts', async (req, res) => {
+  res.status(200).send(contacts);
+})
 
 app.get("/validate-token", authenticateToken, (req, res) => {
   res.json({ valid: true, user: req.user });
@@ -308,6 +325,7 @@ app.post("/refresh-token", authenticateToken, (req, res) => {
 (async () => {
   try {
     await fetchUsers();
+    await fetchContacts();
     app.listen(8080, () => {
       console.log(`Server running on port 8080`);
     });
