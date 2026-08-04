@@ -166,8 +166,8 @@ app.post('/submitform', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const newUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       email: req.body.email,
       password: hashedPassword,
       designation: req.body.designation,
@@ -230,8 +230,8 @@ app.post('/users/login', async (req, res) => {
 
   // 3. Generate JWT
   const token = jwt.sign(
-    { email: user.email, name: user.firstName },
-    //{ email: user.email, name: user.firstname },
+    //{ email: user.email, name: user.firstName },
+    { email: user.email, name: user.firstname },
     SECRET_KEY,
     { expiresIn: "20m" }
   );
@@ -239,8 +239,8 @@ app.post('/users/login', async (req, res) => {
   res.json({
     message: "Login successful ✅",
     token: token,
-    user: user.firstName
-    //user: user.firstname
+    //user: user.firstName
+    user: user.firstname
   });
 
   // try {
