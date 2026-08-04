@@ -2,8 +2,6 @@ import { Pool } from 'pg'
 import express from 'express'
 
 import cors from "cors"
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 const app = express()
 app.use(express.json())
@@ -19,6 +17,7 @@ app.use(cors({
 }));
 
 let usersDetails = [];
+let contacts = [];
 
 const pool = new Pool({
     connectionString: 'postgresql://postgres:XBkWZBKZiKhOZxptkUmEFixBAJOFjQPq@maglev.proxy.rlwy.net:37351/railway'
@@ -87,6 +86,7 @@ async function fetchUsers() {
 }
 
 
+
 async function saveUser(userData) {
     const { firstname, lastname, email, password, designation, mobile, gender } = userData;
 
@@ -104,8 +104,44 @@ async function saveUser(userData) {
 
 fetchUsers();
 
-app.listen(4002, () => {
-    console.log("server is running at port 4002....")
+
+async function fetchContacts() {
+    try {
+        const result = await pool.query(`SELECT * FROM "contact"`);
+        contacts.length = 0;            // clear old data
+        contacts.push(...result.rows);  // update with new data
+        //console.log("userDetails", usersDetails);
+
+        contacts.forEach((user, index) => {
+            console.log(index + 1, user.firstname);
+        });
+
+        return contacts;
+    } catch (err) {
+        console.error('Database error:', err.message);
+        throw err;
+    }
+}
+
+async function saveContact(formData) {
+    const { firstname, lastname, email, mobile, message } = formData;
+
+    const insert_query = `INSERT INTO "contact" ("firstname","lastname",email,mobile,message) VALUES ($1,$2,$3,$4,$5)`
+    try {
+        const result = await pool.query(insert_query, [firstname, lastname, email, mobile, message]);
+        contacts.push(result.rows[0]);
+        console.log("ContactRecord inserted");
+        fetchContacts();
+        return result.rows[0];
+    } catch (err) {
+        console.log("Error while inserting")
+    }
+}
+
+fetchContacts();
+
+app.listen(3500, () => {
+    console.log("server is running at port 3500....")
 })
 
-export { usersDetails, fetchUsers, saveUser };
+export { usersDetails, fetchUsers, saveUser, contacts, fetchContacts, saveContact };
